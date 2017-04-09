@@ -11,6 +11,10 @@ install () {
   install-shards
 } # === end function
 
+get-output () {
+  "$@" 2>/dev/null || :
+}
+
 get-latest () {
   lynx --dump "$1" | grep -P "releases/download.+x86.+" | tr -s ' ' | cut -d' ' -f3 | sort --version-sort | tail -n1
 }
@@ -47,10 +51,10 @@ install-crystal () {
     exit 2
   fi
 
-  if [[ -e "$DIR" ]]; then
+  if [[ "$(get-output "$LATEST_LINK/bin/crystal" --version)" == "$(get-output "$DIR"/bin/crystal --version)" ]]; then
     echo "=== Already installed $NAME:" >&2
     echo "$DIR" >&2
-    "$LATEST_LINK"/bin/crystal -v >&2
+    "$LATEST_LINK"/bin/crystal --version >&2
     return 0
   fi
 
@@ -60,11 +64,12 @@ install-crystal () {
   local +x TMP_FILE="$(download "$LATEST")"
 
   cd "$(dirname "$DIR")"
-  tar -zxvf "$TMP_FILE"
+  tar -zxf "$TMP_FILE"
 
   rm -f "$LATEST_LINK"
   ln -s "$DIR" "$LATEST_LINK"
-  "$LATEST_LINK"/bin/crystal -v
+  echo "=== Installed Crystal:" >&2
+  "$LATEST_LINK"/bin/crystal --version >&2
 } # === install-crystal
 
 install-shards () {
@@ -84,7 +89,7 @@ install-shards () {
     exit 2
   fi
 
-  if [[ -x "$DIR/bin/$EXEC_FILE" ]]; then
+  if [[ "$(get-output "$LATEST_LINK/bin/shards" --version)" == "$(get-output "$DIR"/bin/shards --version)" ]]; then
     echo "=== Already installed $NAME:" >&2
     echo "$DIR" >&2
     "$LATEST_LINK"/bin/shards --version >&2
@@ -109,6 +114,7 @@ install-shards () {
   cd "$THIS_DIR/progs"
   rm -f "$LATEST_LINK"
   ln -s "$DIR" "$LATEST_LINK"
-  "$LATEST_LINK"/bin/shards --version
+  echo "=== Installed shards:" >&2
+  "$LATEST_LINK"/bin/shards --version >&2
 } # === install-shard
 
