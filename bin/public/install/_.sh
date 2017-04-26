@@ -24,12 +24,14 @@ download () {
   local +x BASENAME="$(basename "$URL")"
   mkdir -p "$THIS_DIR/tmp"
   cd "$THIS_DIR/tmp"
-  rm -f "$BASENAME"
   if [[ -f cache/"$BASENAME" ]]; then
     echo "=== Using cache file: cache/$BASENAME" >&2
     cp -f "cache/$BASENAME" "$BASENAME"
   else
-    curl -L "$URL" && cp -f "$BASENAME" cache/"$BASENAME"
+    echo "=== Downloading: $URL" >&2
+    echo "" >&2
+    curl -L "$URL" -o "$BASENAME"
+    cp -f "$BASENAME" cache/"$BASENAME"
   fi
   echo "$PWD/$BASENAME"
 }
@@ -52,7 +54,7 @@ install-crystal () {
   fi
 
   if [[ "$(get-output "$LATEST_LINK/bin/crystal" --version)" == "$(get-output "$DIR"/bin/crystal --version)" ]]; then
-    echo "=== Already installed $NAME:" >&2
+    echo "=== Already installed latest $NAME:" >&2
     echo "$DIR" >&2
     "$LATEST_LINK"/bin/crystal --version >&2
     return 0
@@ -90,7 +92,7 @@ install-shards () {
   fi
 
   if [[ "$(get-output "$LATEST_LINK/bin/shards" --version)" == "$(get-output "$DIR"/bin/shards --version)" ]]; then
-    echo "=== Already installed $NAME:" >&2
+    echo "=== Already installed latest $NAME: " >&2
     echo "$DIR" >&2
     "$LATEST_LINK"/bin/shards --version >&2
     return 0
