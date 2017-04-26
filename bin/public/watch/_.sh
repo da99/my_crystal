@@ -22,6 +22,7 @@ watch () {
     tmp/scratch
     echo ""
   else
+    $0 watch run || :
     mksh_setup watch "-r bin -r tmp " "$THIS_DIR/bin/my_crystal_lang watch run"
   fi
 
