@@ -22,7 +22,8 @@ get-latest () {
 download () {
   local +x URL="$1"; shift
   local +x BASENAME="$(basename "$URL")"
-  mkdir -p "$THIS_DIR/tmp"
+  mkdir -p "$THIS_DIR/tmp/cache"
+
   cd "$THIS_DIR/tmp"
   if [[ -f cache/"$BASENAME" ]]; then
     echo "=== Using cache file: cache/$BASENAME" >&2
@@ -53,11 +54,16 @@ install-crystal () {
     exit 2
   fi
 
-  if [[ "$(get-output "$LATEST_LINK/bin/crystal" --version)" == "$(get-output "$DIR"/bin/crystal --version)" ]]; then
-    echo "=== Already installed latest $NAME:" >&2
-    echo "$DIR" >&2
-    "$LATEST_LINK"/bin/crystal --version >&2
-    return 0
+  local +x CRYSTAL="$LATEST_LINK/bin/crystal"
+  if [[ -x "$CRYSTAL" ]]; then
+    local +x LATEST_VERSION="$(get-output "$CRYSTAL" --version)"
+
+    if [[ ! -z "$LATEST_VERSION" && "$LATEST_VERSION" == "$(get-output "$DIR"/bin/crystal --version)" ]]; then
+      echo "=== Already installed latest $NAME:" >&2
+      echo "$DIR" >&2
+      "$LATEST_LINK"/bin/crystal --version >&2
+      return 0
+    fi
   fi
 
   mkdir -p "$(dirname "$DIR")"

@@ -20,10 +20,8 @@ case $ACTION in
 
   *)
 
-    FUNC_FILE="$THIS_DIR/bin/public/${ACTION}/_.sh"
-
+    local +x FUNC_FILE="$THIS_DIR/bin/public/${ACTION}/_.sh"
     if [[ -s  "$FUNC_FILE"  ]]; then
-
       export THIS_FILE="$FUNC_FILE"
       export THIS_FUNC="$ACTION"
       export THIS_FUNC_DIR="$THIS_DIR/bin/public/${ACTION}"
@@ -33,7 +31,13 @@ case $ACTION in
       exit 0
     fi
 
-    BIN_FILE="$THIS_DIR/bin/lib/${ACTION}.sh"
+    local +x SH_FILE="$THIS_DIR/sh/${ACTION}/_"
+    if [[ -s  "$SH_FILE"  ]]; then
+      source "$SH_FUNC"
+      exit 0
+    fi
+
+    local +x BIN_FILE="$THIS_DIR/bin/lib/${ACTION}.sh"
     if [[ -s "$BIN_FILE" ]]; then
       source "$BIN_FILE"
       "$ACTION" "$@"
