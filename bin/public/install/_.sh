@@ -97,7 +97,8 @@ install-shards () {
     exit 2
   fi
 
-  if [[ "$(get-output "$LATEST_LINK/bin/shards" --version)" == "$(get-output "$DIR"/bin/shards --version)" ]]; then
+  local +x LATEST_SHARDS="$(get-output "$LATEST_LINK/bin/shards" --version)"
+  if [[ ! -z "$LATEST_SHARDS" && "$LATEST_SHARDS" == "$(get-output "$DIR"/bin/shards --version)" ]]; then
     echo "=== Already installed latest $NAME: " >&2
     echo "$DIR" >&2
     "$LATEST_LINK"/bin/shards --version >&2
