@@ -7,8 +7,14 @@ install () {
     exit 2
   fi
 
+  case "$(lsb_release -r -c -s)" in
+    "rolling void")
+      PATH="$PATH:$THIS_DIR/../my_os/bin"
+      my_os package --install libevent-devel gc gc-devel lzo-devel libmcrypt-devel libgcrypt-devel libressl-devel
+      ;;
+  esac
+
   install-crystal
-  install-shards
 } # === end function
 
 get-output () {
