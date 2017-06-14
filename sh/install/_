@@ -1,21 +1,7 @@
+#!/usr/bin/env mksh
+#
 
 # === {{CMD}}  # Installs Crystal and Shards to /progs
-install () {
-  if [[ "$(arch)" != 'x86_64' ]]; then
-    echo "!!! Only 64-bit architecures supported." >&2
-    echo "   (Only 512 fibers allowed in 32-bit architectures.)" >&2
-    exit 2
-  fi
-
-  case "$(lsb_release -r -c -s)" in
-    "rolling void")
-      PATH="$PATH:$THIS_DIR/../my_os/bin"
-      my_os package --install libevent-devel gc gc-devel lzo-devel libmcrypt-devel libgcrypt-devel libressl-devel
-      ;;
-  esac
-
-  install-crystal
-} # === end function
 
 get-output () {
   "$@" 2>/dev/null || :
@@ -132,4 +118,20 @@ install-shards () {
   echo "=== Installed shards:" >&2
   "$LATEST_LINK"/bin/shards --version >&2
 } # === install-shard
+
+if [[ "$(arch)" != 'x86_64' ]]; then
+  echo "!!! Only 64-bit architecures supported." >&2
+  echo "   (Only 512 fibers allowed in 32-bit architectures.)" >&2
+  exit 2
+fi
+
+case "$(lsb_release -r -c -s)" in
+  "rolling void")
+    PATH="$PATH:$THIS_DIR/../my_os/bin"
+    my_os package --install libevent-devel gc gc-devel lzo-devel libmcrypt-devel libgcrypt-devel libressl-devel
+    ;;
+esac
+
+install-crystal
+
 

@@ -1,0 +1,31 @@
+#!/usr/bin/env mksh
+#
+#
+# === {{CMD}} lib|app
+# === Run this command AFTER creating the repo.
+
+
+local +x NAME="$(basename "$PWD")"
+local +x REPO_TYPE="$1"; shift
+
+{
+  if [[ $REPO_TYPE == "lib" ]]; then
+    echo "/shard.lock"
+  fi
+
+  echo "/.shards/"
+  echo "/lib/"
+} >> .gitignore
+
+local +x NEW_GITIGNORE="$(cat .gitignore | awk '!seen[$0]++' )"
+echo "$NEW_GITIGNORE" > .gitignore
+
+mkdir -p src
+
+if [[ -e "shard.yml" ]]; then
+  crystal deps
+else
+  echo "name: $NAME"    >> shard.yml
+  echo "version: 0.1.0" >> shard.yml
+fi
+

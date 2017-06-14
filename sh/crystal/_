@@ -1,0 +1,7 @@
+#!/usr/bin/env mksh
+#
+
+# === {{CMD}}  -args -to -crystal binary
+unset -f crystal
+PATH="$PATH:$THIS_DIR/progs/latest-crystal/bin"
+crystal "$@"
