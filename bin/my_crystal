@@ -12,6 +12,7 @@ if [[ ! -z "$@" ]]; then
   ACTION="$1"; shift
 fi
 
+export SHARDS_INSTALL_PATH="$PWD/.shards/.install"
 
 case $ACTION in
 

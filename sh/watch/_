@@ -21,8 +21,7 @@ if [[ ! -z "$@" ]] ; then
 
   crystal build tmp/scratch.cr
   mv scratch tmp/
-  tmp/scratch
-  echo ""
+  tmp/scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
 else
   $0 watch run || :
   mksh_setup watch "-r bin -r tmp " "$THIS_DIR/bin/my_crystal watch run"
