@@ -1,2 +1,4 @@
-/progs
-/tmp
+/progs/
+/tmp/
+/.shards/
+/shard.lock

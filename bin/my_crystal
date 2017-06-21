@@ -13,6 +13,7 @@ if [[ ! -z "$@" ]]; then
 fi
 
 export SHARDS_INSTALL_PATH="$PWD/.shards/.install"
+export CRYSTAL_PATH="$PWD/.shards/.install:$THIS_DIR/progs/latest-crystal/src"
 
 case $ACTION in
 

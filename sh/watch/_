@@ -19,11 +19,12 @@ if [[ ! -z "$@" ]] ; then
     sh_color "=== File does not exist: {{$FILE}}"
   fi
 
-  crystal build tmp/scratch.cr
-  mv scratch tmp/
-  tmp/scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+  crystal build tmp/scratch.cr -o /tmp/my.crystal.scratch
+  echo "=== Running..."
+  /tmp/my.crystal.scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
 else
-  $0 watch run || :
-  mksh_setup watch "-r bin -r tmp " "$THIS_DIR/bin/my_crystal watch run"
+  local +x CMD="my_crystal watch run"
+  $CMD || :
+  mksh_setup watch "-r bin -r tmp" "$CMD"
 fi
 
