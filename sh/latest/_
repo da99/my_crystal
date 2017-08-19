@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+#
+# === {{CMD}}
+#
+set -u -e -o pipefail
+
+local +x URL="https://github.com/crystal-lang/crystal/releases"
+case "$(uname -a)" in
+  *" x86_64 GNU/Linux")
+    lynx --dump "$URL" | grep -P "releases/download.+-linux-x86.+" | tr -s ' ' | cut -d' ' -f3 | sort --version-sort | tail -n1
+    ;;
+
+  *" i686 GNU/Linux")
+    lynx --dump "$URL" | grep -P "releases/download.+-linux-i686.+" | tr -s ' ' | cut -d' ' -f3 | sort --version-sort | tail -n1
+    ;;
+
+  *)
+    echo "!!! Unknown architecture: $(uname -a)" >&2
+    exit 5
+    ;;
+esac
+
+

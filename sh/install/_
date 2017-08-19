@@ -7,10 +7,6 @@ get-output () {
   "$@" 2>/dev/null || :
 }
 
-get-latest () {
-  lynx --dump "$1" | grep -P "releases/download.+x86.+" | tr -s ' ' | cut -d' ' -f3 | sort --version-sort | tail -n1
-}
-
 download () {
   local +x URL="$1"; shift
   local +x BASENAME="$(basename "$URL")"
@@ -35,7 +31,7 @@ install-crystal () {
   local +x URL="https://github.com/crystal-lang/crystal/releases"
 
   local +x STORAGE="$THIS_DIR/progs/$EXEC_FILE"
-  local +x LATEST="$(get-latest "$URL")"
+  local +x LATEST="$(my_crystal latest)"
   local +x BASENAME="$(basename "$LATEST")"
   local +x VERSION="${BASENAME%$*-linux*}"
   local +x DIR="$STORAGE/versions/$VERSION"
@@ -78,7 +74,7 @@ install-shards () {
   local +x URL="https://github.com/crystal-lang/shards/releases/latest"
 
   local +x STORAGE="$THIS_DIR/progs/$EXEC_FILE"
-  local +x LATEST="$(get-latest "$URL")"
+  local +x LATEST="$(my_crystal latest)"
   local +x BASENAME="$(basename "$LATEST")"
   local +x VERSION="${BASENAME%$*_linux_*}"
   local +x DIR="$STORAGE/versions/$VERSION"
