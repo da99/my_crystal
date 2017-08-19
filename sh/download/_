@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 #
 # === {{CMD}}
-# === {{CMD}} x86_64|i686
+# === {{CMD}} XX.XX.XX x86_64|i686
 #
 set -u -e -o pipefail
 
