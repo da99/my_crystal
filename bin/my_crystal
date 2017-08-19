@@ -6,6 +6,7 @@ local +x THE_ARGS="$@"
 local +x THIS_DIR="$(dirname "$(dirname "$0")")"
 
 PATH="$PATH:$THIS_DIR/progs/latest-crystal/bin"
+PATH="$PATH:$THIS_DIR/bin"
 
 local +x ACTION="[none]"
 if [[ ! -z "$@" ]]; then
