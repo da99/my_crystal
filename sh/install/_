@@ -57,7 +57,7 @@ install-crystal () {
   mkdir -p "$(dirname "$DIR")"
   mkdir -p "$THIS_DIR/tmp"
 
-  local +x TMP_FILE="$(download "$LATEST")"
+  local +x TMP_FILE="$(my_crystal download)"
 
   cd "$(dirname "$DIR")"
   tar -zxf "$TMP_FILE"

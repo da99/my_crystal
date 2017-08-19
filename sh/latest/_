@@ -5,19 +5,13 @@
 set -u -e -o pipefail
 
 local +x URL="https://github.com/crystal-lang/crystal/releases"
-case "$(uname -a)" in
-  *" x86_64 GNU/Linux")
-    lynx --dump "$URL" | grep -P "releases/download.+-linux-x86.+" | tr -s ' ' | cut -d' ' -f3 | sort --version-sort | tail -n1
-    ;;
+local +x ARCH="$@"
+if [[ -z "$ARCH" ]]; then
+  case "$(uname -a)" in
+    *" x86_64 GNU/Linux") ARCH="linux-x86_64" ;;
+    *" i686 GNU/Linux") ARCH="linux-i686" ;;
+    *) echo "!!! Unknown architecture: $(uname -a)" >&2; exit 5 ;;
+  esac
+fi
 
-  *" i686 GNU/Linux")
-    lynx --dump "$URL" | grep -P "releases/download.+-linux-i686.+" | tr -s ' ' | cut -d' ' -f3 | sort --version-sort | tail -n1
-    ;;
-
-  *)
-    echo "!!! Unknown architecture: $(uname -a)" >&2
-    exit 5
-    ;;
-esac
-
-
+lynx --dump "$URL" | grep -P "releases/download.+${ARCH}.+" | tr -s ' ' | cut -d' ' -f3 | sort --version-sort | tail -n1

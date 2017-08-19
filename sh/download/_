@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+#
+# === {{CMD}}
+# === {{CMD}} x86_64|i686
+#
+set -u -e -o pipefail
+
+local +x URL="$(my_crystal latest $@)"
+
+local +x FILE_NAME="$(basename "$URL")"
+
+local +x CACHE="$THIS_DIR/tmp/$(basename "$URL")"
+
+mkdir -p "$THIS_DIR"/tmp
+if [[ ! -f "$CACHE" ]]; then
+  wget "$URL" --output-document="$CACHE" >&2
+fi
+
+echo "$CACHE"
