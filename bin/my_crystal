@@ -16,6 +16,12 @@ fi
 export SHARDS_INSTALL_PATH="$PWD/.shards/.install"
 export CRYSTAL_PATH="$PWD/.shards/.install:$THIS_DIR/progs/latest-crystal/src"
 
+if [[ "$(uname -a)" != *" x86_64 "* ]]; then
+  echo "!!! Only 64-bit architecures supported." >&2
+  echo "   (Only 512 fibers allowed in 32-bit architectures.)" >&2
+  exit 2
+fi
+
 case $ACTION in
 
   help|--help|-h)
