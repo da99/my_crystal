@@ -1,26 +1,36 @@
 #!/usr/bin/env zsh
 #
-# === {{CMD}}
-# === {{CMD}} XX.XX.XX  i686|x86_64
+# === {{CMD}} [--url] [PATTERN]
 #
 set -u -e -o pipefail
 
-local +x PATTERN="download.+"
+local +x PRINT_URL=""
+if [[ "${1:-}" == "--url" ]]; then
+  PRINT_URL="yes"; shift
+fi
+
+local +x PATTERN=""
 local +x URL="https://github.com/crystal-lang/crystal/releases"
 
-if [[ -n "$@" ]]; then
-  PATTERN="${PATTERN}${1}.+"; shift
-fi
-
-local +x ARCH="$@"
-if [[ -n "$ARCH" ]]; then
-  PATTERN="${PATTERN}${1}.+"; shift
-else
+if [[ -z "$@" ]]; then
   case "$(uname -a)" in
-    *" x86_64 GNU/Linux") PATTERN+="linux-x86_64.+" ;;
-    *" i686 GNU/Linux") PATTERN+="linux-i686.+" ;;
+    *" x86_64 GNU/Linux") PATTERN+="linux-x86_64" ;;
     *) echo "!!! Unknown architecture: $(uname -a)" >&2; exit 5 ;;
   esac
+else
+  PATTERN="${PATTERN}${1}"; shift
 fi
 
-lynx --dump "$URL" | grep -P "releases/$PATTERN" | tr -s ' ' | cut -d' ' -f3 | sort --version-sort | tail -n1
+
+local +x URL="$(lynx --dump "$URL" | grep -P "releases/download.+$PATTERN.+" | tr -s ' ' | cut -d' ' -f3 | sort --version-sort | tail -n1)"
+
+if [[ -z "$URL" ]]; then
+  echo "!!! Could not find latest url for: $PATTERN" >&2
+  exit 5
+fi
+
+if [[ "$PRINT_URL" == "yes" ]]; then
+  echo $URL
+else
+  echo "$(basename "$URL" .tar.gz)"
+fi

@@ -7,7 +7,6 @@ get-output () {
   "$@" 2>/dev/null || :
 }
 
-
 if [[ "$(arch)" != 'x86_64' ]]; then
   echo "!!! Only 64-bit architecures supported." >&2
   echo "   (Only 512 fibers allowed in 32-bit architectures.)" >&2
