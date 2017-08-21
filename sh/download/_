@@ -5,7 +5,7 @@
 #
 set -u -e -o pipefail
 
-local +x URL="$(my_crystal latest $@)"
+local +x URL="$(my_crystal latest --url $@)"
 
 local +x FILE_NAME="$(basename "$URL")"
 

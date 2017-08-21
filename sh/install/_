@@ -1,7 +1,7 @@
 #!/usr/bin/env mksh
 #
 
-# === {{CMD}}  # Installs Crystal and Shards to /progs
+# === {{CMD}}  # Installs Crystal to /tmp
 
 get-output () {
   "$@" 2>/dev/null || :
@@ -21,15 +21,14 @@ case "$(lsb_release -r -c -s)" in
 esac
 
 local +x NAME="Crystal"
-local +x EXEC_FILE="crystal"
 local +x URL="https://github.com/crystal-lang/crystal/releases"
 
-local +x STORAGE="$THIS_DIR/progs/$EXEC_FILE"
+local +x STORAGE="$THIS_DIR/tmp/crystal"
 local +x LATEST="$(my_crystal latest)"
 local +x BASENAME="$(basename "$LATEST")"
-local +x VERSION="${BASENAME%$*-linux*}"
-local +x DIR="$STORAGE/versions/$VERSION"
-local +x LATEST_LINK="$THIS_DIR/progs/latest-$EXEC_FILE"
+local +x VERSION="$(basename "$LATEST" .tar.gz)"
+local +x DIR="$THIS_DIR/tmp/crystal-versions/$VERSION"
+local +x LATEST_LINK="$THIS_DIR/tmp/latest-crystal"
 
 if [[ -z "$LATEST" ]]; then
   echo "!!! Could not determine latest $NAME download on the Internet." >&2
@@ -52,9 +51,13 @@ mkdir -p "$(dirname "$DIR")"
 mkdir -p "$THIS_DIR/tmp"
 
 local +x TMP_FILE="$(my_crystal download)"
+if [[ -z "$TMP_FILE" ]]; then
+  exit 5
+fi
 
 cd "$(dirname "$DIR")"
 tar -zxf "$TMP_FILE"
+mv "${VERSION%%-linux-*}" "$VERSION"
 
 rm -f "$LATEST_LINK"
 ln -s "$DIR" "$LATEST_LINK"

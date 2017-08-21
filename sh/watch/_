@@ -6,8 +6,7 @@
 PATH="$PATH:$THIS_DIR/../sh_color/bin"
 PATH="$PATH:$THIS_DIR/../mksh_setup/bin"
 PATH="$PATH:$THIS_DIR/bin"
-PATH="$PATH:$THIS_DIR/progs/latest-crystal/bin"
-PATH="$PATH:$THIS_DIR/progs/latest-shards/bin"
+PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
 
 cd "$THIS_DIR"
 

@@ -3,5 +3,5 @@
 
 # === {{CMD}}  -args -to -crystal binary
 unset -f crystal
-PATH="$PATH:$THIS_DIR/progs/latest-crystal/bin"
+PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
 crystal "$@"
