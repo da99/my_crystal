@@ -13,10 +13,12 @@ if [[ ! -z "$@" ]]; then
   ACTION="$1"; shift
 fi
 
+local +x CRYSTAL_VERSION_FILE="$THIS_DIR/configs/crystal-version"
 export SHARDS_INSTALL_PATH="$PWD/.shards/.install"
-export CRYSTAL_VERSION="${CRYSTAL_PATH:=""}"
+export CRYSTAL_VERSION="${CRYSTAL_VERSION:=""}"
+
 if [[ -z "$CRYSTAL_VERSION" ]]; then
-  CRYSTAL_VERSION="$(cat "$THIS_DIR/configs/crystal-version")"
+  CRYSTAL_VERSION="$(cat "$CRYSTAL_VERSION_FILE")"
 fi
 
 export CRYSTAL_PATH="$PWD/.shards/.install:$THIS_DIR/tmp/latest-crystal/src"

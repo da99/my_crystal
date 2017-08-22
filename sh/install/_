@@ -25,6 +25,7 @@ local +x URL="https://github.com/crystal-lang/crystal/releases"
 
 local +x STORAGE="$THIS_DIR/tmp/crystal"
 local +x LATEST="$(my_crystal latest)"
+local +x CURRENT="$(my_crystal current)"
 local +x BASENAME="$(basename "$LATEST")"
 local +x VERSION="$(basename "$LATEST" .tar.gz)"
 local +x DIR="$THIS_DIR/tmp/crystal-versions/$VERSION"
@@ -61,6 +62,8 @@ mv "${VERSION%%-linux-*}" "$VERSION"
 
 rm -f "$LATEST_LINK"
 ln -s "$DIR" "$LATEST_LINK"
+
+echo "$LATEST" > "$CRYSTAL_VERSION_FILE"
 echo "=== Installed Crystal:" >&2
 "$LATEST_LINK"/bin/crystal --version >&2
 
