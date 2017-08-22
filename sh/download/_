@@ -1,12 +1,12 @@
 #!/usr/bin/env zsh
 #
-# === {{CMD}}
+# === {{CMD}} [PATTERN]
 #
 set -u -e -o pipefail
 
 case "$(echo $@)" in
-  "") local +x URL="$(my_crystal url-for latest)" ;;
-  *) local +x URL="$(my_crystal url-for $@)" ;;
+  "") local +x URL="$(my_crystal url-for-release latest)" ;;
+  *) local +x URL="$(my_crystal url-for-release $@)" ;;
 esac
 
 local +x FILE_NAME="$(basename "$URL")"
