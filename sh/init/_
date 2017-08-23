@@ -4,9 +4,19 @@
 # === {{CMD}} lib|app
 # === Run this command AFTER creating the repo.
 
-
 local +x NAME="$(basename "$PWD")"
-local +x REPO_TYPE="$1"; shift
+local +x REPO_TYPE
+
+if [[ -n "$@" ]]; then
+  local +x REPO_TYPE="$1"; shift
+else
+  echo "=== lib or app? (app): " >&2
+  read -r ANS
+  case "$ANS" in
+    lib) REPO_TYPE=lib ;;
+    *) REPO_TYPE=app ;;
+  esac
+fi
 
 {
   if [[ $REPO_TYPE == "lib" ]]; then
