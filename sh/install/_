@@ -1,10 +1,13 @@
 #!/usr/bin/env mksh
 #
 
-# === {{CMD}}  # Installs Crystal to /tmp
-# === Installs Crystal version specified in configs/crystal-version
+# === {{CMD}}  --runtime
+# === {{CMD}}  # Installs Crystal version specified in configs/crystal-version
 
-my_os package --install libgcc-devel libevent-devel libllvm4.0
+if [[ "$(echo $@)" == "--runtime" ]]; then
+  my_os package --install libgcc-devel libevent-devel libllvm4.0
+  return 0
+fi
 
 get-output () {
   "$@" 2>/dev/null || :
