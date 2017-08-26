@@ -4,11 +4,6 @@
 # === {{CMD}}  --runtime
 # === {{CMD}}  # Installs Crystal version specified in configs/crystal-version
 
-if [[ "$(echo $@)" == "--runtime" ]]; then
-  my_os package --install libgcc-devel libevent-devel libllvm4.0
-  return 0
-fi
-
 get-output () {
   "$@" 2>/dev/null || :
 }
@@ -19,12 +14,19 @@ if [[ "$(arch)" != 'x86_64' ]]; then
   exit 2
 fi
 
-case "$(lsb_release -r -c -s)" in
-  "rolling void")
-    PATH="$PATH:$THIS_DIR/../my_os/bin"
-    my_os package --install libevent-devel gc gc-devel lzo-devel libmcrypt-devel libgcrypt-devel libressl-devel
-    ;;
-esac
+if [[ "$(echo $@)" == "--runtime" ]]; then
+  case "$(lsb_release -r -c -s)" in
+    "rolling void")
+      PATH="$PATH:$THIS_DIR/../my_os/bin"
+      my_os package --install libgcc-devel libevent-devel libllvm4.0 \
+        libevent-devel gc gc-devel lzo-devel libmcrypt-devel libgcrypt-devel \
+        libressl-devel
+      ;;
+  esac
+  return 0
+fi
+
+my_crystal install --runtime
 
 local +x VERSION="$(my_crystal current)"
 local +x DIR="$THIS_DIR/tmp/crystal-versions/$VERSION"
