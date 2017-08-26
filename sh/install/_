@@ -4,6 +4,8 @@
 # === {{CMD}}  # Installs Crystal to /tmp
 # === Installs Crystal version specified in configs/crystal-version
 
+my_os package --install libgcc-devel libevent-devel libllvm4.0
+
 get-output () {
   "$@" 2>/dev/null || :
 }
