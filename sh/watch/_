@@ -19,12 +19,16 @@ if [[ ! -z "$@" ]] ; then
   fi
 
   mkdir -p tmp/bin
-  crystal build tmp/scratch.cr -o tmp/bin/my.scratch
+  cd tmp
+  my_crystal __ build ./scratch.cr -o ./bin/my.scratch
   echo "=== Running..."
-  tmp/bin/my.scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+  ./bin/my.scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+
 else
   local +x CMD="my_crystal watch run"
   $CMD || :
   mksh_setup watch "bin tmp" "$CMD"
+
 fi
+
 

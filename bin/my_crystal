@@ -31,6 +31,12 @@ if [[ "$(arch)" != "x86_64" ]]; then
 fi
 
 case $ACTION in
+  __)
+    ACTION="crystal"
+    ;;
+esac
+
+case $ACTION in
 
   help|--help|-h)
     PATH="$PATH:$THIS_DIR/../mksh_setup/bin"

@@ -36,7 +36,6 @@ if [[ -e "shard.yml" ]]; then
 else
   echo "name: $NAME"    >> shard.yml
   echo "version: 0.1.0" >> shard.yml
-  echo "version: 0.1.0" >> shard.yml
   echo "dependencies:"  >> shard.yml
   echo "  exit_on_error:" >> shard.yml
   echo "    github: da99/exit_on_error" >> shard.yml
