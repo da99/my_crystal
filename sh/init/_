@@ -29,7 +29,7 @@ fi
 local +x NEW_GITIGNORE="$(cat .gitignore | awk '!seen[$0]++' )"
 echo "$NEW_GITIGNORE" > .gitignore
 
-mkdir -p src
+mkdir -p src specs
 
 if [[ -e "shard.yml" ]]; then
   crystal deps
