@@ -1,0 +1,35 @@
+#!/usr/bin/env mksh
+#
+
+# === {{CMD}}
+
+PATH="$PATH:$THIS_DIR/../sh_color/bin"
+PATH="$PATH:$THIS_DIR/../process/bin"
+PATH="$PATH:$THIS_DIR/bin"
+PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
+
+cd "$THIS_DIR"
+mkdir -p "tmp/in" "tmp/out"
+
+if [[ ! -z "$@" ]] ; then
+  echo "=== Compiling... $(date "+%H:%M:%S") ..." >&2
+
+  local +x FILE="tmp/in/scratch.cr"
+  if [[ ! -f "$FILE" ]]; then
+    sh_color RED "=== File does not exist: {{$FILE}}"
+  fi
+
+  mkdir -p tmp/bin
+  cd tmp
+  my_crystal __ build "./in/scratch.cr" -o ./out/scratch
+  echo "=== Running..."
+  ./out/scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+
+else
+  local +x CMD="my_crystal scratch run"
+  $CMD || :
+  process watch "-r bin -r tmp/in" "$CMD"
+
+fi
+
+
