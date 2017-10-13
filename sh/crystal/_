@@ -4,4 +4,5 @@
 # === {{CMD}}  -args -to -crystal binary
 unset -f crystal
 PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
+export CRYSTAL_CACHE_DIR="$THIS_DIR/tmp/crystal-cache"
 crystal "$@"
