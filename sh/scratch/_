@@ -22,8 +22,14 @@ if [[ ! -z "$@" ]] ; then
   mkdir -p tmp/bin
   cd tmp
   my_crystal __ build "./in/scratch.cr" -o ./out/scratch
-  echo "=== Running..."
-  ./out/scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+  if grep "server.listen" "./in/scratch.cr" ; then
+    pkill -f "./out/scratch" || :
+    sh_color ORANGE "=== {{Running}}..."
+    ( ./out/scratch || : ) &
+  else
+    sh_color ORANGE "=== {{Running}}..."
+    ./out/scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+  fi
 
 else
   local +x CMD="my_crystal scratch run"
