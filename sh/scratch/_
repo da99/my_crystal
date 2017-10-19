@@ -5,6 +5,7 @@
 
 PATH="$PATH:$THIS_DIR/../sh_color/bin"
 PATH="$PATH:$THIS_DIR/../process/bin"
+PATH="$PATH:$THIS_DIR/../my_network/bin"
 PATH="$PATH:$THIS_DIR/bin"
 PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
 
@@ -26,6 +27,10 @@ if [[ ! -z "$@" ]] ; then
     pkill -f "./out/scratch" || :
     sh_color ORANGE "=== {{Running}}..."
     ( ./out/scratch || : ) &
+    sleep 1
+    my_network inspect http://localhost:3000/ && echo
+    my_network inspect http://localhost:3000/hello/world && echo
+    my_network inspect http://localhost:3000/hello/the/entire/world && echo
   else
     sh_color ORANGE "=== {{Running}}..."
     ./out/scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
@@ -34,7 +39,7 @@ if [[ ! -z "$@" ]] ; then
 else
   local +x CMD="my_crystal scratch run"
   $CMD || :
-  process watch "-r bin -r tmp/in" "$CMD"
+  process watch "-r bin -r sh -r tmp/in" "$CMD"
 
 fi
 
