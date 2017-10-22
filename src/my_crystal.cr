@@ -40,6 +40,7 @@ when "bump"
   File.write("shard.yml", data.to_yaml)
   shell_out("git add shard.yml")
   shell_out("git", ["commit", "-m", "Bump: v#{new_ver}"])
+  shell_out("git tag v#{new_ver}")
   shell_out("git push")
   shell_out("git push origin v#{new_ver}")
 
