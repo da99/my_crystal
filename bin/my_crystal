@@ -45,7 +45,7 @@ case $ACTION in
     ;;
 
   "__")
-    crystal "$ACTION" "$@"
+    crystal "$@"
     ;;
 
   *)
