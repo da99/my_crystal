@@ -1,6 +1,6 @@
 ---
 name: my_crystal
-version: 0.1.2
+version: 0.1.3
 development_dependencies:
   shell_out:
     github: da99/shell_out
