@@ -8,6 +8,8 @@ local +x THIS_DIR="$(dirname "$(dirname "$0")")"
 PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
 PATH="$PATH:$THIS_DIR/bin"
 PATH="$PATH:$THIS_DIR/../my_os/bin"
+PATH="$PATH:$THIS_DIR/../process/bin"
+PATH="$PATH:$THIS_DIR/../sh_color/bin"
 
 local +x ACTION="[none]"
 if [[ ! -z "$@" ]]; then
@@ -43,6 +45,10 @@ case $ACTION in
     mksh_setup print-help $0 "$@"
     ;;
 
+  "__")
+    crystal "$ACTION" "$@"
+    ;;
+
   *)
     local +x SH_FILE="$THIS_DIR/sh/${ACTION}/_"
     if [[ -s  "$SH_FILE"  ]]; then
@@ -58,13 +64,9 @@ case $ACTION in
       exit 0
     fi
 
-    # === Send it to crystal:
-    crystal "$ACTION" "$@"
+    # === Send it to the binary
+    "$THIS_DIR"/release/my_crystal $ACTION $@
     exit 0
-
-    # === It's an error:
-    echo "!!! Unknown action: $ACTION" 1>&2
-    exit 1
     ;;
 
 esac

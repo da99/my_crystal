@@ -28,9 +28,11 @@ if [[ ! -z "$@" ]] ; then
     sh_color ORANGE "=== {{Running}}..."
     ( ./out/scratch || : ) &
     sleep 1
+    reset
     my_network inspect http://localhost:3000/ && echo
     my_network inspect http://localhost:3000/hello/world && echo
     my_network inspect http://localhost:3000/hello/the/entire/world && echo
+    my_network inspect http://localhost:3000/missing && echo
   else
     sh_color ORANGE "=== {{Running}}..."
     ./out/scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="

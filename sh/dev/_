@@ -1,0 +1,44 @@
+#!/usr/bin/env zsh
+#
+# === {{CMD}}
+#
+set -u -e -o pipefail
+
+local +x ORIGINAL_ARGS="$@"
+if [[ -z "$@" ]]; then
+  local +x ACTION=watch
+else
+  local +x ACTION=$1; shift
+fi
+
+case "$ACTION" in
+
+  run)
+    sh_color ORANGE "=== {{Compiling}}..."
+    my_crystal __ build src/my_crystal.cr -o tmp/out/my_crystal
+    sh_color ORANGE "=== {{Running}}: $(echo $@)"
+    tmp/out/my_crystal $@
+    ;;
+
+  watch)
+    mkdir -p tmp/out tmp/in
+    local +x CMD="my_crystal dev run $@"
+    $CMD || :
+    process watch "-r sh -r src -r bin" "$CMD"
+    ;;
+
+  release)
+    cd "$THIS_DIR"
+    mkdir -p release
+    sh_color ORANGE "=== {{Compiling}}..."
+    my_crystal __ build --release src/my_crystal.cr -o release/my_crystal --no-debug
+    sh_color GREEN "=== {{DONE}}: BOLD{{release/my_crystal}}"
+    ;;
+
+  *)
+    echo "!!! Unknown arguments: $ORIGINAL_ARGS" >&2
+    exit 1
+    ;;
+
+esac
+
