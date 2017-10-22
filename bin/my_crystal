@@ -1,6 +1,7 @@
 #!/usr/bin/env mksh
 #
 #
+#
 set -u -e -o pipefail
 local +x THE_ARGS="$@"
 local +x THIS_DIR="$(dirname "$(dirname "$0")")"
@@ -33,16 +34,14 @@ if [[ "$(arch)" != "x86_64" ]]; then
 fi
 
 case $ACTION in
-  __)
-    ACTION="crystal"
-    ;;
-esac
-
-case $ACTION in
 
   help|--help|-h)
     PATH="$PATH:$THIS_DIR/../mksh_setup/bin"
     mksh_setup print-help $0 "$@"
+    sh_color BOLD  " {{OTHER}}:"
+    sh_color GREEN "   {{my_crystal}} bump major|minor|patch"
+    sh_color GREEN "   {{my_crystal}} version"
+    echo
     ;;
 
   "__")
