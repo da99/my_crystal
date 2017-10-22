@@ -16,6 +16,7 @@ when "bump"
 
   data = YAML.parse File.read("shard.yml")
   version = data["version"]? || raise Exception.new("No version in shard.yml found.")
+
   pieces = version.to_s.split(".")
   major = pieces.shift.to_i
   minor = pieces.shift.to_i
@@ -38,6 +39,9 @@ when "bump"
   new_ver = "#{major}.#{minor}.#{patch}"
   data.as_h["version"] = new_ver
   File.write("shard.yml", data.to_yaml)
+
+  puts "OLD: #{version}"
+  puts "NEW: #{new_ver}"
   shell_out("git add shard.yml")
   shell_out("git", ["commit", "-m", "Bump: v#{new_ver}"])
   shell_out("git tag v#{new_ver}")
