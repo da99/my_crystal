@@ -10,7 +10,7 @@ when "version"
   puts version
 
 when "bump"
-  if !shell_out?("git diff --exit-code")
+  if !shell_out("git status --porcelain").strip.empty?
     Exit.error("repo is not clean")
   end
 
