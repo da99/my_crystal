@@ -4,6 +4,11 @@ require "shell_out"
 require "exit_on_error"
 
 case ARGV[0]?
+when "version"
+  data = YAML.parse File.read("shard.yml")
+  version = data["version"]? || raise Exception.new("No version in shard.yml found.")
+  puts version
+
 when "bump"
   if !shell_out?("git diff --exit-code")
     Exit.error("repo is not clean")
