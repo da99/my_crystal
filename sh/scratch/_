@@ -9,6 +9,7 @@ PATH="$PATH:$THIS_DIR/../my_network/bin"
 PATH="$PATH:$THIS_DIR/bin"
 PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
 
+
 cd "$THIS_DIR"
 mkdir -p "tmp/in" "tmp/out"
 
@@ -39,6 +40,7 @@ if [[ ! -z "$@" ]] ; then
   fi
 
 else
+  export CONTROLLER_PID="$$"
   local +x CMD="my_crystal scratch run"
   $CMD || :
   process watch "-r bin -r sh -r tmp/in" "$CMD"
