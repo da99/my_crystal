@@ -6,3 +6,5 @@ development_dependencies:
     github: da99/shell_out
   exit_on_error:
     github: da99/exit_on_error
+  da_html_escape:
+    github: da99/da_html_escape.cr
