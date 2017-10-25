@@ -9,42 +9,60 @@ PATH="$PATH:$THIS_DIR/../my_network/bin"
 PATH="$PATH:$THIS_DIR/bin"
 PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
 
-
 cd "$THIS_DIR"
 mkdir -p "tmp/in" "tmp/out"
 
-if [[ ! -z "$@" ]] ; then
-  echo "=== Compiling... $(date "+%H:%M:%S") ..." >&2
-
-  local +x FILE="tmp/in/scratch.cr"
-  if [[ ! -f "$FILE" ]]; then
-    sh_color RED "=== File does not exist: {{$FILE}}"
-  fi
-
-  mkdir -p tmp/bin
-  cd tmp
-  my_crystal __ build "./in/scratch.cr" -o ./out/scratch
-  if grep "server.listen" "./in/scratch.cr" ; then
-    pkill -f "./out/scratch" || :
-    sh_color ORANGE "=== {{Running}}..."
-    ( ./out/scratch || : ) &
-    sleep 1
-    reset
-    my_network inspect http://localhost:3000/ && echo
-    my_network inspect http://localhost:3000/hello/world && echo
-    my_network inspect http://localhost:3000/hello/the/entire/world && echo
-    my_network inspect http://localhost:3000/missing && echo
-  else
-    sh_color ORANGE "=== {{Running}}..."
-    ./out/scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
-  fi
-
+if [[ -z "$@" ]]; then
+  local +x ACTION=watch
 else
-  export CONTROLLER_PID="$$"
-  local +x CMD="my_crystal scratch run"
-  $CMD || :
-  process watch "-r bin -r sh -r tmp/in" "$CMD"
-
+  local +x ACTION="$1"; shift
 fi
+
+case "$ACTION" in
+  edit)
+    mkdir -p tmp/in
+    exec $EDITOR tmp/in/scratch.cr
+    ;;
+
+  watch)
+    export CONTROLLER_PID="$$"
+    local +x CMD="my_crystal scratch run"
+    $CMD || :
+    process watch "-r bin -r sh -r tmp/in" "$CMD"
+    ;;
+
+  run)
+    echo "=== Compiling... $(date "+%H:%M:%S") ..." >&2
+
+    local +x FILE="tmp/in/scratch.cr"
+    if [[ ! -f "$FILE" ]]; then
+      sh_color RED "=== File does not exist: {{$FILE}}"
+    fi
+
+    mkdir -p tmp/bin
+    cd tmp
+    my_crystal __ build "./in/scratch.cr" -o ./out/scratch
+    if grep "server.listen" "./in/scratch.cr" ; then
+      pkill -f "./out/scratch" || :
+      sh_color ORANGE "=== {{Running}}..."
+      ( ./out/scratch || : ) &
+      sleep 1
+      reset
+      my_network inspect http://localhost:3000/ && echo
+      my_network inspect http://localhost:3000/hello/world && echo
+      my_network inspect http://localhost:3000/hello/the/entire/world && echo
+      my_network inspect http://localhost:3000/missing && echo
+    else
+      sh_color ORANGE "=== {{Running}}..."
+      ./out/scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+    fi
+    ;;
+
+  *)
+    sh_color RED "=== {{Invalid arguments}}: BOLD{{$ACTION $@}}"
+    exit 2
+    ;;
+esac
+
 
 
