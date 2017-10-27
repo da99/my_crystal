@@ -32,18 +32,21 @@ case "$ACTION" in
     ;;
 
   run)
+    mkdir -p tmp/bin tmp/in tmp/out
+
+    local +x IN_FILE="tmp/in/scratch.cr"
+    local +x OUT_FILE="tmp/out/scratch"
+
     echo "=== Compiling... $(date "+%H:%M:%S") ..." >&2
 
-    local +x FILE="tmp/in/scratch.cr"
-    if [[ ! -f "$FILE" ]]; then
-      sh_color RED "=== File does not exist: {{$FILE}}"
+    if [[ ! -f "$IN_FILE" ]]; then
+      sh_color RED "=== File does not exist: {{$IN_FILE}}"
     fi
 
-    mkdir -p tmp/bin
-    cd tmp
-    my_crystal __ build "./in/scratch.cr" -o ./out/scratch
-    if grep "server.listen" "./in/scratch.cr" ; then
-      pkill -f "./out/scratch" || :
+    my_crystal __ build "$IN_FILE" -o "$OUT_FILE"
+
+    if grep "server.listen" "$IN_FILE" ; then
+      pkill -f "$OUT_FILE" || :
       sh_color ORANGE "=== {{Running}}..."
       ( ./out/scratch || : ) &
       sleep 1
@@ -54,7 +57,7 @@ case "$ACTION" in
       my_network inspect http://localhost:3000/missing && echo
     else
       sh_color ORANGE "=== {{Running}}..."
-      ./out/scratch && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+      "$OUT_FILE" && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
     fi
     ;;
 
