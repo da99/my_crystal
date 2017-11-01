@@ -2,6 +2,8 @@
 name: my_crystal
 version: 0.1.4
 development_dependencies:
+  crystagiri:
+    github: madeindjs/crystagiri
   shell_out:
     github: da99/shell_out
   exit_on_error:

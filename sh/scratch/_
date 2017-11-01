@@ -32,6 +32,7 @@ case "$ACTION" in
     ;;
 
   run)
+    reset
     mkdir -p tmp/bin tmp/in tmp/out
 
     local +x IN_FILE="tmp/in/scratch.cr"
