@@ -32,14 +32,16 @@ echo "$NEW_GITIGNORE" > .gitignore
 mkdir -p src specs
 
 if [[ -e "shard.yml" ]]; then
-  crystal deps
+  crystal deps update
 else
-  echo "name: $NAME"    >> shard.yml
-  echo "version: 0.1.0" >> shard.yml
-  echo "dependencies:"  >> shard.yml
-  echo "  exit_on_error:" >> shard.yml
-  echo "    github: da99/exit_on_error" >> shard.yml
-  echo "  shell_out:" >> shard.yml
-  echo "    github: da99/shell_out" >> shard.yml
+  {
+    echo "name: $NAME"
+    echo "version: 0.1.0"
+    echo "dependencies:"
+    echo "  exit_on_error:"
+    echo "    github: da99/exit_on_error"
+    echo "  shell_out:"
+    echo "    github: da99/shell_out"
+  } >> shard.yml
 fi
 

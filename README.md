@@ -1,5 +1,9 @@
 
 
+lib vs app
+==========
+
+Only difference is `lib` adds `shard.lock` to `.gitignore`.
 
 Notes
 ======
