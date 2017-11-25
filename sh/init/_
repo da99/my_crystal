@@ -39,9 +39,7 @@ else
   echo "dependencies:"  >> shard.yml
   echo "  exit_on_error:" >> shard.yml
   echo "    github: da99/exit_on_error" >> shard.yml
-  echo "    branch: master" >> shard.yml
   echo "  shell_out:" >> shard.yml
   echo "    github: da99/shell_out" >> shard.yml
-  echo "    branch: master" >> shard.yml
 fi
 
