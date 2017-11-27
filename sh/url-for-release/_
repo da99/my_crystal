@@ -17,7 +17,7 @@ else
 fi
 
 local +x URL="$(
-lynx --dump "https://github.com/crystal-lang/crystal/releases" \
+lynx --dump "https://github.com/crystal-lang/crystal/releases/latest" \
   | grep -P "releases/download.+$PATTERN.+" \
   | tr -s ' ' | cut -d' ' -f3 | sort --version-sort \
   | tail -n1

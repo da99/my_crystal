@@ -28,34 +28,34 @@ fi
 
 my_crystal install --runtime
 
-local +x VERSION="$(my_crystal current)"
-local +x DIR="$THIS_DIR/tmp/crystal-versions/$VERSION"
+local +x LATEST="$(my_crystal latest)"
+local +x DIR="$THIS_DIR/tmp/crystal-versions/$LATEST"
 local +x LATEST_LINK="$THIS_DIR/tmp/latest-crystal"
 local +x CRYSTAL="$LATEST_LINK/bin/crystal"
 
-if [[ -z "$VERSION" ]]; then
+if [[ -z "$LATEST" ]]; then
   echo "!!! Could not determine latest Crystal download on the Internet." >&2
   exit 1
 fi
 
 if [[ "$(realpath "$LATEST_LINK")" == "$(realpath "$DIR")"  && -x "$CRYSTAL" ]]; then
   echo "=== Already installed: " >&2
-  echo "$VERSION" >&2
-  my_crystal --version
+  echo "$LATEST" >&2
+  my_crystal __ --version
   return 0
 fi
 
 mkdir -p "$(dirname "$DIR")"
 mkdir -p "$THIS_DIR/tmp"
 
-local +x TMP_FILE="$(my_crystal download $VERSION)"
+local +x TMP_FILE="$(my_crystal download $LATEST)"
 if [[ -z "$TMP_FILE" ]]; then
   exit 5
 fi
 
 cd "$(dirname "$DIR")"
 tar -zxf "$TMP_FILE"
-mv "${VERSION%%-linux-*}" "$VERSION"
+mv "${LATEST%%-linux-*}" "$LATEST"
 
 rm -f "$LATEST_LINK"
 ln -s "$DIR" "$LATEST_LINK"
