@@ -2,13 +2,20 @@
 name: my_crystal
 version: 0.1.4
 development_dependencies:
-  crystagiri:
-    github: madeindjs/crystagiri
+  my_cache:
+    git: file:///apps/my_cache
+  msgpack:
+    github: crystal-community/msgpack-crystal
+  toml:
+    github: manastech/crystal-toml
+    branch: master
+  msgpack:
+    github: crystal-community/msgpack-crystal
+  cannon:
+    github: Papierkorb/cannon
   shell_out:
     github: da99/shell_out
   exit_on_error:
     github: da99/exit_on_error
-  da_html:
-    github: da99/da_html.cr
-  da_html_escape:
-    github: da99/da_html_escape.cr
+  zeromq:
+    github: benoist/zeromq-crystal

@@ -38,13 +38,18 @@ case "$ACTION" in
     local +x IN_FILE="tmp/in/scratch.cr"
     local +x OUT_FILE="tmp/out/scratch"
 
-    echo "=== Compiling... $(date "+%H:%M:%S") ..." >&2
 
     if [[ ! -f "$IN_FILE" ]]; then
       sh_color RED "=== File does not exist: {{$IN_FILE}}"
     fi
 
-    my_crystal __ build "$IN_FILE" -o "$OUT_FILE"
+    if grep "Benchmark\." "$IN_FILE" ; then
+      sh_color ORANGE "=== {{Compiling}} BOLD{{release}} ... $(date "+%H:%M:%S") ..."
+      my_crystal __ build --release --no-debug "$IN_FILE" -o "$OUT_FILE"
+    else
+      sh_color ORANGE "=== {{Compiling}} BOLD{{dev}} ... $(date "+%H:%M:%S") ..."
+      my_crystal __ build "$IN_FILE" -o "$OUT_FILE"
+    fi
 
     if grep "server.listen" "$IN_FILE" ; then
       pkill -f "$OUT_FILE" || :
