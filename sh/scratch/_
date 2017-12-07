@@ -43,7 +43,8 @@ case "$ACTION" in
       sh_color RED "=== File does not exist: {{$IN_FILE}}"
     fi
 
-    if grep "Benchmark\." "$IN_FILE" ; then
+    local +x IS_BENCHMARK="$(grep "Benchmark\." "$IN_FILE")"
+    if [[ ! -z "$IS_BENCHMARK" ]] ; then
       sh_color ORANGE "=== {{Compiling}} BOLD{{release}} ... $(date "+%H:%M:%S") ..."
       my_crystal __ build --release --no-debug "$IN_FILE" -o "$OUT_FILE"
     else
@@ -62,8 +63,15 @@ case "$ACTION" in
       my_network inspect http://localhost:3000/hello/the/entire/world && echo
       my_network inspect http://localhost:3000/missing && echo
     else
-      sh_color ORANGE "=== {{Running}}..."
-      "$OUT_FILE" && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+      if [[ ! -z "$IS_BENCHMARK" ]] ; then
+        sh_color ORANGE "=== {{Running}} benchmark..."
+        "$OUT_FILE"
+        "$OUT_FILE"
+        "$OUT_FILE" && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+      else
+        sh_color ORANGE "=== {{Running}}..."
+        "$OUT_FILE" && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+      fi
     fi
     ;;
 
