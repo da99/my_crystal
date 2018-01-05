@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 #
-# === {{CMD}}
+# === {{CMD}} (defaults to "watch")
+# === {{CMD}} watch|run|release
 #
 set -u -e -o pipefail
 
