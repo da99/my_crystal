@@ -2,7 +2,7 @@
 #
 
 # === {{CMD}}  --runtime
-# === {{CMD}}  # Installs Crystal version specified in configs/crystal-version
+# === {{CMD}}  # Installs latest Crystal version.
 
 get-output () {
   "$@" 2>/dev/null || :
@@ -53,10 +53,14 @@ if [[ -z "$TMP_FILE" ]]; then
   exit 5
 fi
 
-cd "$(dirname "$DIR")"
+local +x TMP_DIR="$(mktemp -d)"
+mkdir -p "$TMP_DIR"
+cd "$TMP_DIR"
 tar -zxf "$TMP_FILE"
-mv "${LATEST%%-linux-*}" "$LATEST"
 
+mv crystal-* "$DIR"
+cd "$THIS_DIR"
+rm -rf "$TMP_DIR"
 rm -f "$LATEST_LINK"
 ln -s "$DIR" "$LATEST_LINK"
 

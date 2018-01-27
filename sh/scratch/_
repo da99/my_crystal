@@ -28,7 +28,7 @@ case "$ACTION" in
     export CONTROLLER_PID="$$"
     local +x CMD="my_crystal scratch run"
     $CMD || :
-    process watch "-r bin -r sh -r tmp/in" "$CMD"
+    process watch "--exclude nothing -r bin -r sh -r tmp/in" "$CMD"
     ;;
 
   run)
