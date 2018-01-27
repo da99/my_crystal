@@ -25,6 +25,8 @@ if [[ -z "$CRYSTAL_VERSION" ]]; then
   CRYSTAL_VERSION="$(cat "$CRYSTAL_VERSION_FILE")"
 fi
 
+export CRYSTAL_PATH="$(realpath "$THIS_DIR/tmp/latest-crystal/share/crystal/src"):$PWD/.shards/.install"
+
 if [[ "$(arch)" != "x86_64" ]]; then
   echo "!!! Only 64-bit architecures supported." >&2
   echo "!!! (Only 512 fibers allowed in 32-bit architectures.)" >&2
