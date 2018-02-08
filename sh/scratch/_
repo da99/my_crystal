@@ -49,7 +49,7 @@ case "$ACTION" in
       my_crystal __ build --release --no-debug "$IN_FILE" -o "$OUT_FILE"
     else
       sh_color ORANGE "=== {{Compiling}} BOLD{{dev}} ... $(date "+%H:%M:%S") ..."
-      my_crystal __ build "$IN_FILE" -o "$OUT_FILE"
+      my_crystal __ build --error-trace "$IN_FILE" -o "$OUT_FILE"
     fi
 
     if grep "server.listen" "$IN_FILE" ; then

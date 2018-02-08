@@ -30,6 +30,7 @@ case "$ACTION" in
 
   release)
     cd "$THIS_DIR"
+    my_crystal __ deps update
     mkdir -p release
     sh_color ORANGE "=== {{Compiling}}..."
     my_crystal __ build --release src/my_crystal.cr -o release/my_crystal --no-debug
