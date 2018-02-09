@@ -1,6 +1,6 @@
 ---
 name: my_crystal
-version: 0.1.4
+version: 0.2.0
 development_dependencies:
   my_cache:
     git: file:///apps/my_cache
@@ -9,8 +9,6 @@ development_dependencies:
   toml:
     github: manastech/crystal-toml
     branch: master
-  msgpack:
-    github: crystal-community/msgpack-crystal
   cannon:
     github: Papierkorb/cannon
   shell_out:
