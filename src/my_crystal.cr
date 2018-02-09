@@ -40,14 +40,6 @@ when "bump"
   data.as_h["version"] = new_ver
   File.write("shard.yml", data.to_yaml)
 
-  puts "OLD: #{version}"
-  puts "NEW: #{new_ver}"
-  puts shell_out("git add shard.yml")
-  puts shell_out("git", ["commit", "-m", "Bump: v#{new_ver}"])
-  puts shell_out("git tag v#{new_ver}")
-  puts shell_out("git push")
-  puts shell_out("git push origin v#{new_ver}")
-
 else
   if ARGV.empty?
     raise Exception.new("Invalid request: [no options specified]")

@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+#
+# === {{CMD}}
+#
+set -u -e -o pipefail
+
+local +x ORIGINAL_ARGS="$@"
+local +x my_crystal_bin="$THIS_DIR/bin/my_crystal.release"
+
+local +x old_ver="$("$my_crystal_bin" version)"
+"$my_crystal_bin" bump $@
+local +x new_ver="$("$my_crystal_bin" version)"
+
+
+echo "OLD: ${old_ver}"
+echo "NEW: ${new_ver}"
+git add shard.yml
+git commit -m "Bump: v${new_ver}"
+git tag "v${new_ver}"
+git push
+git push origin "v${new_ver}"
+
