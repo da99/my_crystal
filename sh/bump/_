@@ -7,7 +7,7 @@ set -u -e -o pipefail
 local +x ORIGINAL_ARGS="$@"
 
 local +x old_ver="$("$THIS_BINARY" version)"
-"$my_crystal_bin" bump $@
+"$THIS_BINARY" bump $@
 local +x new_ver="$("$THIS_BINARY" version)"
 
 echo "OLD: ${old_ver}"
