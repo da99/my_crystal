@@ -5,6 +5,7 @@
 set -u -e -o pipefail
 local +x THE_ARGS="$@"
 local +x THIS_DIR="$(dirname "$(dirname "$0")")"
+local +x THIS_BINARY="$THIS_DIR"/release/my_crystal
 
 PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
 PATH="$PATH:$THIS_DIR/bin"
@@ -64,7 +65,7 @@ case $ACTION in
     fi
 
     # === Send it to the binary
-    "$THIS_DIR"/release/my_crystal $ACTION $@
+    "$THIS_BINARY" $ACTION $@
     exit 0
     ;;
 
