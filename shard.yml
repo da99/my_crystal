@@ -1,6 +1,6 @@
 ---
 name: my_crystal
-version: 0.2.0
+version: 0.2.1
 development_dependencies:
   my_cache:
     git: file:///apps/my_cache
