@@ -4,7 +4,7 @@
 # === {{CMD}} lib|app
 # === Run this command AFTER creating the repo.
 
-local +x NAME="$(basename "$PWD")"
+local +x NAME="$(basename "$PWD" .cr)"
 local +x REPO_TYPE
 
 if [[ -n "$@" ]]; then
@@ -38,8 +38,8 @@ else
     echo "name: $NAME"
     echo "version: 0.0.0"
     echo "dependencies:"
-    echo "  exit_on_error:"
-    echo "    github: da99/exit_on_error"
+    echo "  da_spec:"
+    echo "    github: da99/da_spec.cr"
     echo "  shell_out:"
     echo "    github: da99/shell_out"
   } >> shard.yml
