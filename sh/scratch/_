@@ -70,7 +70,7 @@ case "$ACTION" in
         "$OUT_FILE" && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
       else
         sh_color ORANGE "=== {{Running}}..."
-        "$OUT_FILE" && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}} ==="
+        "$OUT_FILE" && sh_color GREEN "=== {{DONE}} ===" || sh_color RED "=== {{DONE}}: $? ==="
       fi
     fi
     ;;
