@@ -7,7 +7,6 @@ local +x THE_ARGS="$@"
 local +x THIS_DIR="$(dirname "$(dirname "$0")")"
 local +x THIS_BINARY="$THIS_DIR"/release/my_crystal
 
-PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
 PATH="$PATH:$THIS_DIR/bin"
 PATH="$PATH:$THIS_DIR/../my_os/bin"
 PATH="$PATH:$THIS_DIR/../process/bin"
@@ -26,7 +25,9 @@ if [[ -z "$CRYSTAL_VERSION" ]]; then
   CRYSTAL_VERSION="$(cat "$CRYSTAL_VERSION_FILE")"
 fi
 
-export CRYSTAL_PATH="$(realpath "$THIS_DIR/tmp/latest-crystal/share/crystal/src"):$PWD/.shards/.install"
+# PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
+# export CRYSTAL_PATH="$(realpath "$THIS_DIR/tmp/latest-crystal/share/crystal/src"):$PWD/.shards/.install"
+export CRYSTAL_PATH="/usr/lib/crystal:$PWD/.shards/.install"
 
 if [[ "$(arch)" != "x86_64" ]]; then
   echo "!!! Only 64-bit architecures supported." >&2
