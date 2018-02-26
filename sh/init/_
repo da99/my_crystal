@@ -41,7 +41,7 @@ else
     echo "  da_spec:"
     echo "    github: da99/da_spec.cr"
     echo "  shell_out:"
-    echo "    github: da99/shell_out"
+    echo "    github: da99/shell_out.cr"
   } >> shard.yml
 fi
 
