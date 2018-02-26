@@ -37,11 +37,11 @@ else
   {
     echo "name: $NAME"
     echo "version: 0.0.0"
-    echo "dependencies:"
+    echo "development_dependencies:"
     echo "  da_spec:"
     echo "    github: da99/da_spec.cr"
-    echo "  shell_out:"
-    echo "    github: da99/shell_out.cr"
+    echo "  da_process:"
+    echo "    github: da99/da_process.cr"
   } >> shard.yml
 fi
 
