@@ -24,6 +24,7 @@ fi
   fi
 
   echo "/.shards/"
+  echo "/.crystal/"
 } >> .gitignore
 
 local +x NEW_GITIGNORE="$(cat .gitignore | awk '!seen[$0]++' )"
