@@ -1,7 +1,5 @@
 
 require "yaml"
-require "shell_out"
-require "exit_on_error"
 
 case ARGV[0]?
 when "version"
@@ -10,8 +8,9 @@ when "version"
   puts version
 
 when "bump"
-  if !shell_out("git status --porcelain").strip.empty?
-    Exit.error("repo is not clean")
+  if !`git status --porcelain`.strip.empty?
+    STDERR.puts "!!! repo is not clean"
+    exit 2
   end
 
   data = YAML.parse File.read("shard.yml")
