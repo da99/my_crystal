@@ -30,7 +30,8 @@ fi
 local +x NEW_GITIGNORE="$(cat .gitignore | awk '!seen[$0]++' )"
 echo "$NEW_GITIGNORE" > .gitignore
 
-mkdir -p src specs
+mkdir -p src/"$NAME" specs
+
 
 if [[ -e "shard.yml" ]]; then
   crystal deps update
@@ -38,11 +39,12 @@ else
   {
     echo "name: $NAME"
     echo "version: 0.0.0"
+    echo "dependencies:"
+    echo "  da:"
+    echo "    github: da99/da"
     echo "development_dependencies:"
     echo "  da_spec:"
     echo "    github: da99/da_spec.cr"
-    echo "  da_process:"
-    echo "    github: da99/da_process.cr"
   } >> shard.yml
 fi
 
