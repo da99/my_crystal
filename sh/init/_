@@ -25,13 +25,21 @@ fi
 
   echo "/.shards/"
   echo "/.crystal/"
+  echo "/tmp/"
 } >> .gitignore
 
 local +x NEW_GITIGNORE="$(cat .gitignore | awk '!seen[$0]++' )"
 echo "$NEW_GITIGNORE" > .gitignore
 
-mkdir -p src/"$NAME" specs
+mkdir -p src/"$NAME" specs tmp/out
 
+
+case "$REPO_TYPE" in
+  app)
+    mkdir -p bin
+    touch bin/__.cr
+    ;;
+esac
 
 if [[ -e "shard.yml" ]]; then
   crystal deps update
