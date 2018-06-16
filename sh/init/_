@@ -52,7 +52,7 @@ else
     echo "    github: da99/da"
     echo "development_dependencies:"
     echo "  da_spec:"
-    echo "    github: da99/da_spec.cr"
+    echo "    github: da99/da_spec"
   } >> shard.yml
 fi
 
