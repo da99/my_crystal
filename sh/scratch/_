@@ -26,9 +26,16 @@ case "$ACTION" in
 
   watch)
     export CONTROLLER_PID="$$"
-    local +x CMD="my_crystal scratch run"
-    $CMD || :
-    process watch "--exclude nothing -r bin -r sh -r tmp/in" "$CMD"
+    local +x CMD="da crystal run tmp/in/scratch.cr"
+    local +x content=""
+    while true ; do
+      if [[ "$content" != "$(cat tmp/in/scratch.cr)" ]]; then
+        content="$(cat tmp/in/scratch.cr)"
+        $CMD || :
+        echo "=== Exit status: $? ==="
+      fi
+      sleep 1
+    done
     ;;
 
   run)
