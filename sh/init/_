@@ -42,7 +42,7 @@ case "$REPO_TYPE" in
 esac
 
 if [[ -e "shard.yml" ]]; then
-  crystal deps update
+  da shards update
 else
   {
     echo "name: $NAME"

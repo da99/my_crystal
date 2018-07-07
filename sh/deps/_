@@ -15,8 +15,8 @@ fi
 case "$ACTION" in
 
   default)
-    my_crystal __ deps update
-    my_crystal __ deps prune
+    my_crystal __ shards update
+    my_crystal __ shards prune
     ;;
 
   *)

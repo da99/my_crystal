@@ -46,8 +46,12 @@ case $ACTION in
     echo
     ;;
 
+  "shards")
+    da shards "$@"
+    ;;
+
   "__")
-    crystal "$@"
+    da crystal "$@"
     ;;
 
   *)
