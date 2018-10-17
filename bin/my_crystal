@@ -46,6 +46,10 @@ case $ACTION in
     echo
     ;;
 
+  target)
+    cat "$THIS_DIR"/configs/crystal-version
+    ;;
+
   "shards")
     da shards "$@"
     ;;

@@ -14,39 +14,52 @@ if [[ "$(arch)" != 'x86_64' ]]; then
   exit 2
 fi
 
+local +x MAIN_DIR="$THIS_DIR/tmp/crystal-versions"
+
 if [[ "$(echo $@)" == "--runtime" ]]; then
   case "$(lsb_release -r -c -s)" in
     "rolling void")
       PATH="$PATH:$THIS_DIR/../my_os/bin"
-      my_os package --install libgcc-devel libevent-devel libllvm4.0 \
+      my_os package --install libgcc-devel libevent-devel libllvm6.0 \
         libevent-devel gc gc-devel lzo-devel libmcrypt-devel libgcrypt-devel \
         libressl-devel
       ;;
   esac
   return 0
+else
+  MAIN_DIR="$@"
+  if [[ -z "$MAIN_DIR" ]]; then
+    echo "!!! No instal dir specified." >&2
+    exit 1
+  fi
+
+  if [[ ! -d "$MAIN_DIR" ]]; then
+    echo "!!! Not a dir: $MAIN_DIR" >&2
+    exit 1
+  fi
 fi
 
 my_crystal install --runtime
 
 local +x LATEST="$(my_crystal latest)"
-local +x DIR="$THIS_DIR/tmp/crystal-versions/$LATEST"
-local +x LATEST_LINK="$THIS_DIR/tmp/latest-crystal"
-local +x CRYSTAL="$LATEST_LINK/bin/crystal"
+local +x DIR="$MAIN_DIR/$LATEST"
+local +x CRYSTAL="$DIR/bin/crystal"
 
 if [[ -z "$LATEST" ]]; then
   echo "!!! Could not determine latest Crystal download on the Internet." >&2
   exit 1
 fi
 
-if [[ "$(realpath "$LATEST_LINK")" == "$(realpath "$DIR")"  && -x "$CRYSTAL" ]]; then
+my_crystal cache clear
+
+if [[ -x "$CRYSTAL" ]]; then
   echo "=== Already installed: " >&2
   echo "$LATEST" >&2
-  my_crystal __ --version
+  "$CRYSTAL" --version
   return 0
 fi
 
 mkdir -p "$(dirname "$DIR")"
-mkdir -p "$THIS_DIR/tmp"
 
 local +x TMP_FILE="$(my_crystal download $LATEST)"
 if [[ -z "$TMP_FILE" ]]; then
@@ -61,8 +74,6 @@ tar -zxf "$TMP_FILE"
 mv crystal-* "$DIR"
 cd "$THIS_DIR"
 rm -rf "$TMP_DIR"
-rm -f "$LATEST_LINK"
-ln -s "$DIR" "$LATEST_LINK"
 
 echo "$LATEST" > "$CRYSTAL_VERSION_FILE"
 echo "=== Installed Crystal:" >&2
