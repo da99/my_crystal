@@ -2,6 +2,8 @@
 name: my_crystal
 version: 0.2.2
 development_dependencies:
+  da:
+    github: da99/da
   pg:
     github: will/crystal-pg
   cannon:
