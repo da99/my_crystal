@@ -4,7 +4,9 @@ version: 0.2.2
 development_dependencies:
   da:
     github: da99/da
-  pg:
-    github: will/crystal-pg
-  cannon:
-    github: Papierkorb/cannon
+  da_html:
+    github: da99/da_html
+  # pg:
+  #   github: will/crystal-pg
+  # cannon:
+  #   github: Papierkorb/cannon
