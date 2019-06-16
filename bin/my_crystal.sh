@@ -1,4 +1,4 @@
-#!/usr/bin/env mksh
+#!/usr/bin/env zsh
 #
 #
 #
@@ -25,11 +25,11 @@ if [[ -z "$CRYSTAL_VERSION" ]]; then
   CRYSTAL_VERSION="$(cat "$CRYSTAL_VERSION_FILE")"
 fi
 
-# PATH="$PATH:$THIS_DIR/tmp/latest-crystal/bin"
-# export CRYSTAL_PATH="$(realpath "$THIS_DIR/tmp/latest-crystal/share/crystal/src"):$PWD/.shards/.install"
-export CRYSTAL_PATH="/usr/lib/crystal:$PWD/.shards/.install"
+PATH="/progs/crystal/bin:$PATH"
+export CRYSTAL_PATH="$(realpath "/progs/crystal/share/crystal/src"):$PWD/.shards/.install"
+# export CRYSTAL_PATH="/usr/lib/crystal:$PWD/.shards/.install"
 
-if [[ "$(arch)" != "x86_64" ]]; then
+if [[ "$(uname -m)" != "x86_64" ]]; then
   echo "!!! Only 64-bit architecures supported." >&2
   echo "!!! (Only 512 fibers allowed in 32-bit architectures.)" >&2
   exit 2

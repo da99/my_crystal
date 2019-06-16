@@ -8,7 +8,7 @@ get-output () {
   "$@" 2>/dev/null || :
 }
 
-if [[ "$(arch)" != 'x86_64' ]]; then
+if [[ "$(uname -m)" != 'x86_64' ]]; then
   echo "!!! Only 64-bit architecures supported." >&2
   echo "   (Only 512 fibers allowed in 32-bit architectures.)" >&2
   exit 2
@@ -17,21 +17,20 @@ fi
 local +x MAIN_DIR="$THIS_DIR/tmp/crystal-versions"
 
 if [[ "$(echo $@)" == "--runtime" ]]; then
-  case "$(lsb_release -r -c -s)" in
-    "rolling void")
+  if  [[ "$(lsb_release -r -c -s)" == "rolling void" ]]; then
+    PATH="$PATH:$THIS_DIR/../my_os/bin"
+    my_os package --install libgcc-devel libevent-devel libllvm6.0 \
+      libevent-devel gc gc-devel lzo-devel libmcrypt-devel libgcrypt-devel \
+      libressl-devel
+  else
+    if  [[ "$(lsb_release -i -r -s)" == "Arch rolling" ]]; then
       PATH="$PATH:$THIS_DIR/../my_os/bin"
-      my_os package --install libgcc-devel libevent-devel libllvm6.0 \
-        libevent-devel gc gc-devel lzo-devel libmcrypt-devel libgcrypt-devel \
-        libressl-devel
-      ;;
-  esac
+      sudo pacman -S --needed crystal
+    fi
+  fi
   return 0
 else
-  MAIN_DIR="$@"
-  if [[ -z "$MAIN_DIR" ]]; then
-    echo "!!! No instal dir specified." >&2
-    exit 1
-  fi
+  MAIN_DIR="/progs"
 
   if [[ ! -d "$MAIN_DIR" ]]; then
     echo "!!! Not a dir: $MAIN_DIR" >&2
@@ -76,7 +75,15 @@ cd "$THIS_DIR"
 rm -rf "$TMP_DIR"
 
 echo "$LATEST" > "$CRYSTAL_VERSION_FILE"
+
 echo "=== Installed Crystal:" >&2
 "$CRYSTAL" --version
+local +x NEW_DIR="$DIR/crystal"
+echo "" >&2
+
+set -x
+rm -rf "/progs/crystal"
+mv "$DIR" "$NEW_DIR"
+
 
 

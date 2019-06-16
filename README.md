@@ -1,8 +1,20 @@
 
 
+
+Put these ENV variables in your shell:
+======================================
+
+```
+  PATH="/progs/crystal/bin:$PATH"
+  SHARDS_INSTALL_PATH = "./.shards/.install"
+  CRYSTAL_PATH        = "/path/to/crystal/share/crystal/src:.shards/.install"
+```
+
+This way, you can use the crystal binary directly in case of any bugs in
+`my_crystal`.
+
 lib vs app
 ==========
-
 Only difference is `lib` adds `shard.lock` to `.gitignore`.
 
 Notes
