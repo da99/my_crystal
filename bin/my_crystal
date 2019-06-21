@@ -5,12 +5,8 @@
 set -u -e -o pipefail
 local +x THE_ARGS="$@"
 local +x THIS_DIR="$(dirname "$(dirname "$0")")"
-local +x THIS_BINARY="$THIS_DIR"/release/my_crystal
 
 PATH="$PATH:$THIS_DIR/bin"
-PATH="$PATH:$THIS_DIR/../my_os/bin"
-PATH="$PATH:$THIS_DIR/../process/bin"
-PATH="$PATH:$THIS_DIR/../sh_color/bin"
 
 local +x ACTION="[none]"
 if [[ ! -z "$@" ]]; then

@@ -3,3 +3,4 @@
 /.shards/
 /shard.lock
 /.crystal/
+/lib
