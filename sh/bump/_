@@ -4,11 +4,12 @@
 #
 set -u -e -o pipefail
 
+set -x
 local +x ORIGINAL_ARGS="$@"
 
-local +x old_ver="$("$THIS_BINARY" version)"
-"$THIS_BINARY" bump $@
-local +x new_ver="$("$THIS_BINARY" version)"
+local +x old_ver="$(my_crystal version)"
+/apps/my_crystal/bin/__my_crystal bump $@
+local +x new_ver="$(my_crystal version)"
 
 echo "OLD: ${old_ver}"
 echo "NEW: ${new_ver}"

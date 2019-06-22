@@ -42,6 +42,10 @@ case $ACTION in
     echo
     ;;
 
+  version)
+    cat shard.yml | grep -Po "version: \K([0-9.]+)"
+    ;;
+
   target)
     cat "$THIS_DIR"/configs/crystal-version
     ;;
@@ -70,7 +74,7 @@ case $ACTION in
     fi
 
     # === Send it to the binary
-    "$THIS_BINARY" $ACTION $@
+    crystal $ACTION $@
     exit 0
     ;;
 

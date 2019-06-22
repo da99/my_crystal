@@ -13,8 +13,9 @@ when "bump"
     exit 2
   end
 
-  data = YAML.parse File.read("shard.yml")
-  version = data["version"]? || raise Exception.new("No version in shard.yml found.")
+  shard_yml = File.read("shard.yml")
+  matched = shard_yml.match(/^version:\s+([0-9\.]+)$/m).not_nil!
+  version = matched[1]?.not_nil!
 
   pieces = version.to_s.split(".")
   major = pieces.shift.to_i
@@ -36,8 +37,7 @@ when "bump"
   end
 
   new_ver = "#{major}.#{minor}.#{patch}"
-  data.as_h["version"] = new_ver
-  File.write("shard.yml", data.to_yaml)
+  File.write("shard.yml", shard_yml.sub(matched[0], "version: #{new_ver}") )
 
 else
   if ARGV.empty?

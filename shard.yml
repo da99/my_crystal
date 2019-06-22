@@ -10,3 +10,6 @@ development_dependencies:
   #   github: will/crystal-pg
   # cannon:
   #   github: Papierkorb/cannon
+targets:
+  __my_crystal:
+    main: src/my_crystal.cr

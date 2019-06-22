@@ -51,19 +51,6 @@ case "$ACTION" in
     process watch "-r sh -r src -r bin" "$CMD"
     ;;
 
-  release)
-    cd "$THIS_DIR"
-    my_crystal __ deps update
-    mkdir -p release
-    sh_color ORANGE "=== {{Compiling}}..."
-    my_crystal __ build --release src/my_crystal.cr -o release/my_crystal --no-debug
-    if [[ -n "$@" ]]; then
-      git add release/my_crystal
-      my_crystal bump $@
-    fi
-    sh_color GREEN "=== {{DONE}}: BOLD{{release/my_crystal}}"
-    ;;
-
   *)
     echo "!!! Unknown arguments: $ORIGINAL_ARGS" >&2
     exit 1
