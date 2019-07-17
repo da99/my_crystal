@@ -28,6 +28,10 @@ Notes
 * Reading a request body: https://stackoverflow.com/questions/45414568/read-request-body-without-deleting-it
 
 
+Bookmarks:
+==========
+* Shard.yml specification: https://github.com/crystal-lang/shards/blob/master/SPEC.md
+
 Snippets
 ========
 
