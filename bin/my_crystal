@@ -13,16 +13,16 @@ if [[ ! -z "$@" ]]; then
   ACTION="$1"; shift
 fi
 
-local +x CRYSTAL_VERSION_FILE="$THIS_DIR/configs/crystal-version"
-export SHARDS_INSTALL_PATH="$PWD/.shards/.install"
-export CRYSTAL_VERSION="${CRYSTAL_VERSION:=""}"
+# local +x CRYSTAL_VERSION_FILE="$THIS_DIR/configs/crystal-version"
+# export SHARDS_INSTALL_PATH="$PWD/.shards/.install"
+# export CRYSTAL_VERSION="${CRYSTAL_VERSION:=""}"
 
-if [[ -z "$CRYSTAL_VERSION" ]]; then
-  CRYSTAL_VERSION="$(cat "$CRYSTAL_VERSION_FILE")"
-fi
+# if [[ -z "$CRYSTAL_VERSION" ]]; then
+#   CRYSTAL_VERSION="$(cat "$CRYSTAL_VERSION_FILE")"
+# fi
 
-PATH="/progs/crystal/bin:$PATH"
-export CRYSTAL_PATH="$(realpath "/progs/crystal/share/crystal/src"):$PWD/.shards/.install"
+# PATH="/progs/crystal/bin:$PATH"
+# export CRYSTAL_PATH="$(realpath "/progs/crystal/share/crystal/src"):$PWD/.shards/.install"
 # export CRYSTAL_PATH="/usr/lib/crystal:$PWD/.shards/.install"
 
 if [[ "$(uname -m)" != "x86_64" ]]; then
@@ -34,8 +34,8 @@ fi
 case $ACTION in
 
   help|--help|-h)
-    PATH="$PATH:$THIS_DIR/../mksh_setup/bin"
-    mksh_setup print-help $0 "$@"
+    PATH="$PATH:$THIS_DIR/../my_zsh/bin"
+    my_zsh print-help $0 "$@"
     sh_color BOLD  " {{OTHER}}:"
     sh_color GREEN "   {{my_crystal}} bump major|minor|patch"
     sh_color GREEN "   {{my_crystal}} version"

@@ -1,4 +1,4 @@
-#!/usr/bin/env mksh
+#!/usr/bin/env zsh
 #
 #
 # === {{CMD}} lib|app
@@ -26,6 +26,7 @@ fi
   echo "/.shards/"
   echo "/.crystal/"
   echo "/tmp/"
+  echo "/lib/"
 } >> .gitignore
 
 local +x NEW_GITIGNORE="$(cat .gitignore | awk '!seen[$0]++' )"
