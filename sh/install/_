@@ -74,6 +74,7 @@ mv crystal-* "$DIR"
 cd "$THIS_DIR"
 rm -rf "$TMP_DIR"
 
+CRYSTAL_VERSION_FILE="/progs/crystal/VERSION"
 echo "$LATEST" > "$CRYSTAL_VERSION_FILE"
 
 echo "=== Installed Crystal:" >&2
