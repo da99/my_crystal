@@ -8,6 +8,14 @@ get-output () {
   "$@" 2>/dev/null || :
 }
 
+update_version_file () {
+  new_version=$1
+  mkdir -p /progs/crystal
+  CRYSTAL_VERSION_FILE="/progs/crystal/VERSION"
+  echo "$new_version" > "$CRYSTAL_VERSION_FILE"
+  echo "=== Wrote to ${CRYSTAL_VERSION_FILE}: $new_version"
+}
+
 if [[ "$(uname -m)" != 'x86_64' ]]; then
   echo "!!! Only 64-bit architecures supported." >&2
   echo "   (Only 512 fibers allowed in 32-bit architectures.)" >&2
@@ -52,9 +60,10 @@ fi
 my_crystal cache clear
 
 if [[ -x "$CRYSTAL" ]]; then
-  echo "=== Already installed: " >&2
-  echo "$LATEST" >&2
+  echo "=== Already installed: $LATEST" >&2
+  update_version_file "$LATEST"
   "$CRYSTAL" --version
+  which crystal
   return 0
 fi
 
@@ -74,9 +83,7 @@ mv crystal-* "$DIR"
 cd "$THIS_DIR"
 rm -rf "$TMP_DIR"
 
-CRYSTAL_VERSION_FILE="/progs/crystal/VERSION"
-echo "$LATEST" > "$CRYSTAL_VERSION_FILE"
-
+update_version_file "$LATEST"
 echo "=== Installed Crystal:" >&2
 "$CRYSTAL" --version
 local +x NEW_DIR="$DIR/crystal"
