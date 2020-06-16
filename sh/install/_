@@ -8,12 +8,12 @@ get-output () {
   "$@" 2>/dev/null || :
 }
 
-update_version_file () {
+update_version () {
   new_version=$1
-  mkdir -p /progs/crystal
-  CRYSTAL_VERSION_FILE="/progs/crystal/VERSION"
-  echo "$new_version" > "$CRYSTAL_VERSION_FILE"
-  echo "=== Wrote to ${CRYSTAL_VERSION_FILE}: $new_version"
+  rm -f /progs/crystal
+  set -x
+  ln -s /progs/${new_version} /progs/crystal
+  set +x
 }
 
 if [[ "$(uname -m)" != 'x86_64' ]]; then
@@ -27,9 +27,9 @@ local +x MAIN_DIR="$THIS_DIR/tmp/crystal-versions"
 if [[ "$(echo $@)" == "--runtime" ]]; then
   if  [[ "$(lsb_release -r -c -s)" == "rolling void" ]]; then
     PATH="$PATH:$THIS_DIR/../my_os/bin"
-    my_os package --install libgcc-devel libevent-devel libllvm6.0 \
-      libevent-devel gc gc-devel lzo-devel libmcrypt-devel libgcrypt-devel \
-      libressl-devel pcre-devel pcre2-devel
+    my_os package --install $(xbps-query -R -x crystal | sort | grep -Po "^[[:alnum:]\-\.\_\+]+" | tr '\n' ' ') \
+      lzo-devel libmcrypt-devel libgcrypt-devel \
+      libressl-devel pcre-devel pcre2-devel || :
   else
     if  [[ "$(lsb_release -i -r -s)" == "Arch rolling" ]]; then
       PATH="$PATH:$THIS_DIR/../my_os/bin"
@@ -61,7 +61,7 @@ my_crystal cache clear
 
 if [[ -x "$CRYSTAL" ]]; then
   echo "=== Already installed: $LATEST" >&2
-  update_version_file "$LATEST"
+  update_version "$LATEST"
   "$CRYSTAL" --version
   which crystal
   return 0
@@ -83,15 +83,11 @@ mv crystal-* "$DIR"
 cd "$THIS_DIR"
 rm -rf "$TMP_DIR"
 
-update_version_file "$LATEST"
 echo "=== Installed Crystal:" >&2
 "$CRYSTAL" --version
-local +x NEW_DIR="$DIR/crystal"
 echo "" >&2
 
-set -x
-rm -rf "/progs/crystal"
-mv "$DIR" "$NEW_DIR"
+update_version "$LATEST"
 
 
 
