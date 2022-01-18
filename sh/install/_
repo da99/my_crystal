@@ -10,7 +10,7 @@ get-output () {
 
 update_version () {
   new_version=$1
-  rm -f /progs/crystal
+  rm -rf /progs/crystal
   set -x
   ln -s /progs/${new_version} /progs/crystal
   set +x
